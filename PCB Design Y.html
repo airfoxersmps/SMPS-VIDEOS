@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMPS Tech Labs | Learning Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .sidebar-active {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .topic-link {
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+        }
+
+        .topic-link:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .topic-active {
+            background: #f1f5f9;
+            color: #2563eb;
+            border-left: 2px solid #2563eb;
+        }
+
+        /* Video Container Aspect Ratio */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="text-slate-700 overflow-hidden">
+
+    <div class="flex h-screen w-full">
+        <!-- Sidebar Navigation -->
+        <aside class="w-80 bg-white border-r border-slate-200 flex flex-col shrink-0">
+            <!-- Sidebar Header / Logo -->
+            <div class="p-6 border-b border-slate-50">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div
+                        class="w-10 h-10 bg-white shadow-sm border border-slate-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-atom text-sky-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xs font-bold tracking-tight uppercase text-slate-900 leading-none">SMPS Tech
+                            Labs</h1>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase mt-1 tracking-wider">Learning Portal</p>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Course Modules
+                    </p>
+
+                    <!-- Module 1 -->
+                    <div class="mb-4">
+                        <button onclick="toggleModule('mod1')"
+                            class="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-50 rounded-md">
+                            <span>MODULE 1: FUNDAMENTALS</span>
+                            <i id="icon-mod1" class="fas fa-chevron-down text-[8px] transition-transform"></i>
+                        </button>
+                        <div id="mod1" class="mt-1 space-y-1 ml-2 border-l border-slate-100">
+                            <a href="#" onclick="loadVideo('axDfzeUJeFg', 'PCB Design Course 2025', this)"
+                                class="topic-link topic-active block px-4 py-2 text-xs">PCB Design Course 2025</a>
+                            <a href="#" onclick="loadVideo('Nz-XvvlozK4', 'PCB Start to Finish', this)"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">PCB Start to Finish</a>
+                            <a href="#" onclick="loadVideo('0cwvYz2HmLw', 'BMS Overview', this)"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">BMS Overview</a>
+                        </div>
+                    </div>
+
+                    <!-- Module 2 -->
+                    <div class="mb-4">
+                        <button onclick="toggleModule('mod2')"
+                            class="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-50 rounded-md">
+                            <span>MODULE 2: EDA & TOOLS</span>
+                            <i id="icon-mod2" class="fas fa-chevron-right text-[8px] transition-transform"></i>
+                        </button>
+                        <div id="mod2" class="hidden mt-1 space-y-1 ml-2 border-l border-slate-100">
+                            <a href="#" onclick="loadVideo('YTGzncKU5RY', 'Altium Quick Start', this)"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">Altium Quick Start</a>
+                            <a href="#" onclick="loadVideo('PqFtSpAXB9Q', 'Altium Step-by-Step', this)"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">Altium Step-by-Step</a>
+                            <a href="#" onclick="loadVideo('TJPyqRnhytA', 'KiCad Start to Gerber', this)"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">KiCad Tutorial</a>
+                            <a href="#" onclick="loadVideo('eEdnImVezi8', 'Fusion Electronics', this)"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">Fusion 360 Electronics</a>
+                            <a href="#" onclick="loadVideo('gCwibH1YeiY', 'EasyEDA Tutorial', this)"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">EasyEDA Guide</a>
+                        </div>
+                    </div>
+
+                    <!-- Experts -->
+                    <div class="mb-4">
+                        <button onclick="toggleModule('mod3')"
+                            class="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-50 rounded-md">
+                            <span>EXPERT CHANNELS</span>
+                            <i id="icon-mod3" class="fas fa-chevron-right text-[8px] transition-transform"></i>
+                        </button>
+                        <div id="mod3" class="hidden mt-1 space-y-1 ml-2 border-l border-slate-100">
+                            <a href="https://www.youtube.com/channel/UCWLoHp3WJG_ats8waVCu7Mw" target="_blank"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">Altium Academy <i
+                                    class="fas fa-external-link-alt ml-1 text-[8px]"></i></a>
+                            <a href="https://www.youtube.com/@PhilsLab" target="_blank"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">Phil's Lab <i
+                                    class="fas fa-external-link-alt ml-1 text-[8px]"></i></a>
+                            <a href="https://www.youtube.com/@RobertFeranec" target="_blank"
+                                class="topic-link block px-4 py-2 text-xs text-slate-500">Robert Feranec <i
+                                    class="fas fa-external-link-alt ml-1 text-[8px]"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Bottom Branding -->
+            <div class="mt-auto p-6">
+                <div class="bg-slate-900 rounded-xl p-4 text-white flex items-center space-x-3 shadow-lg">
+                    <div
+                        class="w-10 h-10 bg-sky-600 rounded flex items-center justify-center font-bold text-xs shrink-0">
+                        SL</div>
+                    <div class="overflow-hidden">
+                        <p class="text-[11px] font-bold leading-none truncate">ENTERPRISE HUB</p>
+                        <p class="text-[9px] text-slate-400 mt-1 uppercase truncate">SMPSTECHLABS © 2024</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace (YouTube UI) -->
+        <div class="flex-1 flex flex-col min-w-0 bg-white">
+            <!-- Top Header -->
+            <header class="h-16 border-b border-slate-100 flex items-center justify-between px-8 shrink-0">
+                <div class="flex items-center text-sm font-medium">
+                    <span class="text-sky-600 font-bold">SMPS Tech Labs</span>
+                    <span class="mx-3 text-slate-300">|</span>
+                    <span id="breadcrumb" class="text-slate-500">Module 1 / PCB Design Course 2025</span>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div class="bg-slate-100 px-3 py-1.5 rounded-full flex items-center space-x-2">
+                        <i class="fas fa-circle text-emerald-500 text-[6px]"></i>
+                        <span class="text-[10px] font-bold text-slate-600 uppercase tracking-tight">System Online</span>
+                    </div>
+                    <button
+                        class="bg-[#0f172a] text-white text-[10px] font-bold px-4 py-2 rounded uppercase tracking-wider flex items-center">
+                        Lab Gateway <i class="fas fa-arrow-right ml-2 text-[8px]"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Video Player Content -->
+            <main class="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
+                <div class="max-w-5xl mx-auto">
+                    <!-- Video Hero Section -->
+                    <div class="video-wrapper mb-8">
+                        <iframe id="mainPlayer" src="https://www.youtube.com/embed/axDfzeUJeFg" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+
+                    <!-- Video Details -->
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-start gap-6 border-b border-slate-100 pb-8 mb-8">
+                        <div class="flex-1">
+                            <span
+                                class="bg-sky-50 text-sky-600 text-[10px] font-bold px-3 py-1 rounded uppercase tracking-widest mb-3 inline-block">Active
+                                Session</span>
+                            <h2 id="activeVideoTitle" class="text-3xl font-bold text-slate-900 tracking-tight">PCB
+                                Design Course 2025</h2>
+                            <p class="text-slate-500 text-sm mt-3 leading-relaxed max-w-2xl">
+                                Welcome to the SMPS Tech Labs precision engineering portal. This module covers core
+                                hardware engineering cycles, including high-reliability project setup, schematic
+                                capture, and layout fundamentals.
+                            </p>
+                        </div>
+
+                        <div class="flex items-center space-x-2">
+                            <button
+                                class="flex items-center space-x-2 bg-slate-50 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 transition">
+                                <i class="fas fa-bookmark"></i>
+                                <span>Save</span>
+                            </button>
+                            <button
+                                class="flex items-center space-x-2 bg-slate-50 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 transition">
+                                <i class="fas fa-share"></i>
+                                <span>Share</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function toggleModule(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+            } else {
+                el.classList.add('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+            }
+        }
+
+        function loadVideo(youtubeId, title, element) {
+            // Update Iframe
+            document.getElementById('mainPlayer').src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+
+            // Update Title and UI
+            document.getElementById('activeVideoTitle').innerText = title;
+            document.getElementById('breadcrumb').innerText = `Training Portal / ${title}`;
+
+            // Update Sidebar Active State
+            document.querySelectorAll('.topic-link').forEach(link => {
+                link.classList.remove('topic-active', 'text-slate-900');
+                link.classList.add('text-slate-500');
+            });
+            element.classList.add('topic-active');
+            element.classList.remove('text-slate-500');
+
+            // On Mobile/Small screens, scroll to player
+            if (window.innerWidth < 768) {
+                document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Portal | SMPS Tech Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            z-index: 50;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #64748b;
+            transition: all 0.2s;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .nav-item.active {
+            background-color: #f0f7ff;
+            color: #2563eb;
+            border-left-color: #2563eb;
+            font-weight: 600;
+        }
+
+        .resource-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .resource-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-lab {
+            background: #0f172a;
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .phase-badge {
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        /* Custom scrollbar for sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="p-6 mb-4">
+            <div class="flex flex-col items-center">
+                <img src="https://api.iconify.design/material-symbols:science-outline.svg?color=%232563eb"
+                    class="w-12 h-12 mb-2" alt="Logo">
+                <h2 class="text-xl font-bold tracking-tight">SMPS <span class="text-blue-600">TECH LAB</span></h2>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-1">SMPS TECH LABS</p>
+            </div>
+        </div>
+
+        <div class="px-6 py-2">
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Curriculum Units</p>
+            <nav id="moduleList">
+                <!-- Modules will be injected here -->
+            </nav>
+        </div>
+
+        <!-- Enterprise Hub Footer -->
+        <div class="absolute bottom-6 left-6 right-6">
+            <div class="bg-slate-900 rounded-xl p-4 flex items-center gap-3 text-white">
+                <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-xs">SL</div>
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Enterprise Hub</p>
+                    <p class="text-[9px] text-slate-500">SMPS TECH LABS © 2024</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Header -->
+        <header
+            class="bg-white border-b border-slate-200 px-8 py-4 sticky top-0 z-40 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-slate-500" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="text-blue-600 font-bold text-sm">SMPS Tech Labs</span>
+                    <span class="text-slate-300">|</span>
+                    <span class="text-slate-500 text-sm">Learning Portal</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <button class="text-slate-400 hover:text-slate-600"><i class="fas fa-search"></i></button>
+                <button class="text-slate-400 hover:text-slate-600"><i class="fas fa-layer-group"></i></button>
+                <button class="btn-lab">LAB GATEWAY <i class="fas fa-arrow-right text-xs"></i></button>
+            </div>
+        </header>
+
+        <!-- Page Hero -->
+        <div class="px-8 pt-10 pb-6">
+            <div id="phaseDisplay" class="mb-4">
+                <span class="phase-badge">Phase 01</span>
+            </div>
+            <h1 id="moduleTitle" class="text-3xl font-bold text-slate-900 mb-2">Project Setup & Fundamentals</h1>
+            <p id="moduleDesc" class="text-slate-500">Core frameworks for high-reliability hardware engineering cycles.
+            </p>
+        </div>
+
+        <!-- Resource Grid -->
+        <div class="px-8 pb-20">
+            <div id="resourceGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                <!-- Resources will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modules = [
+            { id: 1, name: "Fundamentals", icon: "fa-layer-group", phase: "01", title: "Project Setup & Fundamentals", desc: "Core frameworks for high-reliability hardware engineering cycles." },
+            { id: 2, name: "EDA & Tools", icon: "fa-microchip", phase: "02", title: "EDA Mastery & Environment", desc: "Setting up design environments and industry-standard tools." },
+            { id: 3, name: "Development", icon: "fa-code-branch", phase: "03", title: "Forward Engineering", desc: "Advanced schematic design and hardware implementation." },
+            { id: 4, name: "Validation", icon: "fa-vial", phase: "04", title: "Simulation & Validation", desc: "Rigorous testing of virtual and physical prototypes." },
+            { id: 5, name: "Manufacturing", icon: "fa-industry", phase: "05", title: "Design for Manufacturing", desc: "Optimizing layouts for mass production and fabrication." },
+            { id: 6, name: "Compliance", icon: "fa-shield-halved", phase: "06", title: "Standards & Compliance", desc: "Meeting global EMI/EMC and safety regulations." },
+            { id: 7, name: "Mechanical", icon: "fa-cube", phase: "07", title: "Mechanical & Packaging", desc: "Enclosure design and industrial packaging standards." }
+        ];
+
+        const resources = [
+            { id: 1, mod: 1, title: "Agile for Hardware Teams", desc: "Implementing iterative development for physical prototyping.", link: "https://www.atlassian.com/agile", icon: "fa-sync", iconColor: "bg-blue-50 text-blue-500" },
+            { id: 2, mod: 1, title: "Reading Schematics", desc: "Interpretation of industrial circuit documentation.", link: "https://www.allaboutcircuits.com/textbook/", icon: "fa-project-diagram", iconColor: "bg-indigo-50 text-indigo-500" },
+            { id: 3, mod: 1, title: "BMS Overview", desc: "Foundation of cell protection and gauging systems.", link: "https://www.ti.com/battery-management/overview.html", icon: "fa-bolt", iconColor: "bg-green-50 text-green-500" },
+            { id: 4, mod: 2, title: "Altium Getting Started", desc: "Workspace mastery for high-density PCB engineering.", link: "https://www.altium.com/documentation/altium-designer", icon: "fa-pen-nib", iconColor: "bg-red-50 text-red-500" },
+            { id: 5, mod: 2, title: "Soldering Standards", desc: "IPC certified techniques for professional assembly.", link: "https://www.ipc.org/", icon: "fa-fire", iconColor: "bg-orange-50 text-orange-500" },
+            { id: 6, mod: 2, title: "Proteus Simulation", desc: "Interactive circuit design and simulation environment.", link: "https://www.labcenter.com/education/", icon: "fa-desktop", iconColor: "bg-purple-50 text-purple-500" },
+            { id: 7, mod: 3, title: "PCB Design Guidelines", desc: "Strategic component placement and routing logic.", link: "https://www.ti.com/lit/an/snva489c/snva489c.pdf", icon: "fa-map", iconColor: "bg-emerald-50 text-emerald-500" },
+            { id: 8, mod: 3, title: "Reverse Engineering", desc: "Technical analysis of existing PCB architectures.", link: "https://www.allaboutcircuits.com/technical-articles/", icon: "fa-search-plus", iconColor: "bg-slate-50 text-slate-500" },
+            { id: 14, mod: 3, title: "Magnetic Components", desc: "Designing power inductors and transformers.", link: "https://www.ti.com/seclit/ml/slup263/slup263.pdf", icon: "fa-magnet", iconColor: "bg-rose-50 text-rose-500" },
+            { id: 19, mod: 5, title: "Manufacturing Orders", desc: "Managing JLCPCB and fabrication processes.", link: "https://jlcpcb.com/", icon: "fa-truck", iconColor: "bg-blue-50 text-blue-600" },
+            { id: 22, mod: 4, title: "Firmware Debugging", desc: "STM32 debugging and HEX file analysis.", link: "https://www.st.com/en/development-tools/stm32cubeide.html", icon: "fa-bug", iconColor: "bg-yellow-50 text-yellow-600" },
+            { id: 25, mod: 4, title: "Oscilloscope Analysis", desc: "Keysight basic waveform and signal measurement.", link: "https://www.keysight.com/us/en/assets/7018-03184/application-notes/5989-8064.pdf", icon: "fa-wave-square", iconColor: "bg-cyan-50 text-cyan-500" },
+            { id: 27, mod: 6, title: "EMC/EMI Compliance", desc: "Rohde & Schwarz guide to interference mitigation.", link: "https://www.rohde-schwarz.com/", icon: "fa-broadcast-tower", iconColor: "bg-teal-50 text-teal-600" },
+            { id: 32, mod: 7, title: "Enclosure Design", desc: "3D CAD modeling for final product assembly.", link: "https://www.autodesk.com/education/home", icon: "fa-box-open", iconColor: "bg-amber-50 text-amber-600" }
+        ];
+
+        let activeModule = 1;
+
+        function init() {
+            renderModules();
+            switchModule(1);
+        }
+
+        function renderModules() {
+            const list = document.getElementById('moduleList');
+            list.innerHTML = modules.map(m => `
+                <div class="nav-item ${m.id === activeModule ? 'active' : ''}" onclick="switchModule(${m.id})">
+                    <i class="fas ${m.icon} w-5 mr-3"></i>
+                    <span class="text-sm">Module ${m.id}: ${m.name}</span>
+                </div>
+            `).join('');
+        }
+
+        function switchModule(id) {
+            activeModule = id;
+            const mod = modules.find(m => m.id === id);
+
+            document.getElementById('moduleTitle').innerText = mod.title;
+            document.getElementById('moduleDesc').innerText = mod.desc;
+            document.getElementById('phaseDisplay').innerHTML = `<span class="phase-badge">Phase ${mod.phase}</span>`;
+
+            renderModules();
+            renderResources(id);
+        }
+
+        function renderResources(moduleId) {
+            const grid = document.getElementById('resourceGrid');
+            const filtered = resources.filter(r => r.mod === moduleId);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 text-center py-20 text-slate-400">Resources for this module are coming soon.</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(r => `
+                <div class="resource-card">
+                    <div>
+                        <div class="icon-box ${r.iconColor}">
+                            <i class="fas ${r.icon}"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-1">${r.title}</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed">${r.desc}</p>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between">
+                        <a href="${r.link}" target="_blank" class="text-blue-600 text-xs font-bold flex items-center gap-1 hover:gap-2 transition-all">
+                            LEARN MORE <i class="fas fa-chevron-right text-[8px]"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        window.onload = init;
+    </script>
+</body>
+
+</html>
