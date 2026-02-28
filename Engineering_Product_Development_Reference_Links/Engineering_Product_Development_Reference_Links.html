@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMPS Tech Lab | Engineering Intelligent Power</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --brand-blue: #0066b2;
+            --brand-orange: #f39200;
+            --brand-dark: #1e293b;
+            --brand-gray-border: #e2e8f0;
+            --sidebar-width: 340px;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--brand-dark);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: #ffffff;
+            border-right: 1px solid var(--brand-gray-border);
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            z-index: 50;
+        }
+
+        .logo-section {
+            padding: 40px 32px 32px;
+            border-bottom: 2px solid var(--brand-blue);
+        }
+
+        .logo-text {
+            color: var(--brand-blue);
+            font-weight: 900;
+            font-size: 26px;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-subtext {
+            color: #64748b;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-top: 6px;
+        }
+
+        .module-header {
+            font-size: 10px;
+            font-weight: 900;
+            color: #94a3b8;
+            padding: 24px 32px 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: #fcfcfc;
+        }
+
+        .nav-item {
+            padding: 10px 32px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .nav-item:hover {
+            background-color: #f8fafc;
+            color: var(--brand-blue);
+        }
+
+        .nav-item.active {
+            background-color: #f1f7ff;
+            color: var(--brand-dark);
+            font-weight: 700;
+            border-left: 4px solid var(--brand-blue);
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--brand-orange);
+            flex-shrink: 0;
+        }
+
+        /* Dashboard Styling */
+        .main-content {
+            background-color: #ffffff;
+            margin: 20px;
+            border-radius: 24px;
+            padding: 40px;
+            overflow-y: auto;
+            flex-grow: 1;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+            z-index: 10;
+        }
+
+        .content-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+        }
+
+        /* Fallback Layer */
+        .viewer-container {
+            flex-grow: 1;
+            background-color: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            position: relative;
+            z-index: 20;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+            height: 40vh;
+        }
+
+        .branding-fallback {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, #ffffff 0%, #f0f7ff 100%);
+            z-index: 5;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #canvas-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .fallback-content {
+            position: relative;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .fallback-title {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--brand-blue);
+            letter-spacing: -0.02em;
+            margin-bottom: 5px;
+        }
+
+        .fallback-subtitle {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--brand-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            opacity: 0.7;
+        }
+
+        /* Info Sections */
+        .info-overlay {
+            margin-top: 24px;
+            padding: 24px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            gap: 40px;
+            z-index: 10;
+        }
+
+        .synopsis-box {
+            flex: 2;
+        }
+
+        .key-points {
+            flex: 1;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #edf2f7;
+        }
+
+        /* General UI */
+        .btn-new-tab {
+            background-color: var(--brand-blue);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .status-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex">
+
+    <aside class="sidebar">
+        <div class="logo-section">
+            <div class="logo-text">SMPS TECH LAB</div>
+            <div class="logo-subtext">Engineering Intelligent Power</div>
+        </div>
+
+        <nav class="flex-grow overflow-y-auto pb-10" id="module-list">
+            <!-- Modules Injected here -->
+        </nav>
+
+        <div class="p-6 border-t border-gray-100">
+            <div class="status-box">
+                <div class="pulse"></div>
+                <span class="text-[10px] font-black text-green-700 uppercase tracking-widest">Library Active</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <span id="display-mod"
+                        class="text-blue-600 text-[10px] font-black uppercase tracking-widest">Engineering
+                        Roadmap</span>
+                    <div class="h-[2px] w-6 bg-orange-500 rounded"></div>
+                </div>
+                <h1 id="display-title" class="content-title text-slate-800">SMPS Tech Lab Academy</h1>
+            </div>
+
+            <a id="launch-link" href="#" target="_blank" class="btn-new-tab shadow-md">
+                <i class="fas fa-external-link-alt"></i>
+                OPEN IN NEW TAB
+            </a>
+        </div>
+
+        <div class="viewer-container shadow-inner">
+            <div id="fallback-layer" class="branding-fallback">
+                <div id="canvas-fallback"></div>
+                <div class="fallback-content">
+                    <div class="fallback-title">SMPS TECH LAB</div>
+                    <div class="fallback-subtitle">Engineering Intelligent Power</div>
+                </div>
+            </div>
+            <iframe id="main-viewer" src="" allowfullscreen></iframe>
+        </div>
+
+        <div class="info-overlay">
+            <div class="synopsis-box">
+                <h4 class="text-xs font-black text-blue-600 uppercase tracking-widest mb-3">Resource Synopsis</h4>
+                <p id="lesson-synopsis" class="text-sm text-slate-500 leading-relaxed font-medium">
+                    Select a technical stage from the sidebar to view detailed reference materials.
+                </p>
+            </div>
+            <div class="key-points">
+                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Core Focus</h4>
+                <ul id="lesson-objectives" class="text-xs space-y-2 text-slate-600 font-bold">
+                    <!-- Objectives will be injected -->
+                </ul>
+            </div>
+        </div>
+
+        <footer class="mt-8 flex justify-between items-center border-t pt-4">
+            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Product Development Reference
+                v4.0</span>
+            <div class="flex items-center gap-2 text-blue-600 font-black text-xs">
+                <i class="fas fa-microchip text-orange-500"></i>
+                © SMPS TECH LAB
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const libraryData = [
+            {
+                group: "Phase 1: Team & Setup",
+                items: [
+                    { title: "1. Agile Collaboration", url: "https://www.atlassian.com/agile", blocks: true, desc: "Basics of agile hardware development, task management, and team communication workflows.", objs: ["Sprint Planning", "Hardware Agile", "Team Velocity"] },
+                    { title: "1. Meeting Best Practices", url: "https://hbr.org/2016/07/the-right-way-to-hold-a-meeting", blocks: true, desc: "Engineering meeting protocols to ensure decision-making efficiency and project alignment.", objs: ["Action Items", "Time Management", "Project Sync"] }
+                ]
+            },
+            {
+                group: "Phase 2: Technical Reference",
+                items: [
+                    { title: "2. Reading Schematics", url: "https://www.allaboutcircuits.com/textbook/", blocks: false, desc: "Fundamental guide to interpreting electrical blueprints and netlist identification.", objs: ["Symbol Mapping", "Netlists", "Blueprint Flow"] },
+                    { title: "2. Reading Datasheets (TI)", url: "https://www.ti.com/lit/an/slvaeo9/slvaeo9.pdf", blocks: true, desc: "Professional method for analyzing semiconductor data to ensure operating limits are met.", objs: ["Parameter Analysis", "Safe Op Area", "Thermal Derating"] },
+                    { title: "3. TI BMS Overview", url: "https://www.ti.com/battery-management/overview.html", blocks: true, desc: "Comprehensive architecture of Battery Management Systems including monitoring and balancing.", objs: ["BMS Topologies", "Monitoring AFE", "Safety Cut-offs"] },
+                    { title: "3. ADI BMS Guide", url: "https://www.analog.com/en/technical-articles/battery-management-system.html", blocks: true, desc: "Advanced technical articles on high-precision BMS measurement and cell balancing techniques.", objs: ["Passive Balancing", "Active Balancing", "ISO26262 Compliance"] }
+                ]
+            },
+            {
+                group: "Phase 3: EDA & Software",
+                items: [
+                    { title: "4. Altium Documentation", url: "https://www.altium.com/documentation/altium-designer", blocks: true, desc: "Complete guide to the industry-standard environment for professional PCB design.", objs: ["Workspace Setup", "Schematic Entry", "Project Management"] },
+                    { title: "5. Altium Getting Started", url: "https://www.altium.com/documentation/altium-designer", blocks: true, desc: "Initial steps for setting up a new project and capturing engineering schematics in Altium.", objs: ["Library Setup", "Component Creation", "Sheet Hierarchy"] },
+                    { title: "5. IPC Soldering Standards", url: "https://www.ipc.org/", blocks: true, desc: "Global standards for electronic assembly, soldering quality, and joint inspection criteria.", objs: ["IPC-A-610", "Joint Reliability", "SMT Criteria"] },
+                    { title: "6. Proteus Learning Portal", url: "https://www.labcenter.com/education/", blocks: false, desc: "Hub for visual simulation and SPICE modeling to verify circuit behavior before manufacturing.", objs: ["Real-time Sim", "Visual Instruments", "Debugging"] }
+                ]
+            },
+            {
+                group: "Phase 4: Design Principles",
+                items: [
+                    { title: "7. PCB Design Guidelines", url: "https://www.ti.com/lit/an/snva489c/snva489c.pdf", blocks: true, desc: "TI guidelines for high-performance PCB layout to minimize noise and optimize power flow.", objs: ["Plane Integrity", "Signal Coupling", "Stackup Design"] },
+                    { title: "8. Reverse Engineering Guide", url: "https://www.allaboutcircuits.com/technical-articles/", blocks: false, desc: "Analysis of physical hardware to recover and understand circuit design patterns.", objs: ["Layer Tracing", "Component Mapping", "Design Recovery"] },
+                    { title: "9. Infineon MOSFET Selection", url: "https://www.infineon.com/cms/en/product/power/mosfet/", blocks: true, desc: "Deep dive into power MOSFET parameters for selecting efficient switching components.", objs: ["RDS(on) Sizing", "Gate Charge", "Thermal Losses"] },
+                    { title: "9. DigiKey Learning Center", url: "https://www.digikey.com/en/resources", blocks: true, desc: "Component library and parametric search hub for sourcing engineering materials.", objs: ["BOM Research", "Part Lifecycle", "Sourcing Logistics"] }
+                ]
+            },
+            {
+                group: "Phase 5: Forward Development",
+                items: [
+                    { title: "10. Product Development", url: "https://ieeexplore.ieee.org/", blocks: true, desc: "Peer-reviewed overview of modern hardware product development cycles.", objs: ["IEEE Standards", "R&D Methodology", "System Integration"] },
+                    { title: "11. SnapEDA Footprint Guide", url: "https://www.snapeda.com/blog/", blocks: true, desc: "Best practices for creating accurate PCB footprints and 3D component models.", objs: ["Padstack Design", "3D Modeling", "Footprint Standards"] },
+                    { title: "12. High Current Layout", url: "https://www.ti.com/lit/an/snva489c/snva489c.pdf", blocks: true, desc: "Optimizing PCB copper weights and trace widths for high-current power applications.", objs: ["Thermal Vias", "Trace Sizing", "Current Density"] },
+                    { title: "13. Mouser BOM Tool", url: "https://www.mouser.in/tools/bom-tool/", blocks: true, desc: "Professional procurement tool for BOM analysis, cost estimation, and stock tracking.", objs: ["BOM Scrubbing", "Cost Optimization", "Lead Time Tracking"] }
+                ]
+            },
+            {
+                group: "Phase 6: Magnetics & Simulation",
+                items: [
+                    { title: "14. PSU Design Seminar", url: "https://www.ti.com/seclit/ml/slup263/slup263.pdf", blocks: true, desc: "TI's seminar on transformer and inductor design for high-efficiency switching supplies.", objs: ["Core Selection", "Winding Design", "Magnetics Simulation"] },
+                    { title: "14. Magnetics Core Guide", url: "https://www.mag-inc.com/", blocks: true, desc: "Technical data on powder cores and ferrite materials for power inductors.", objs: ["Permeability", "Core Loss", "Inductor Sizing"] },
+                    { title: "15. Altium DRC Guide", url: "https://www.altium.com/documentation/", blocks: true, desc: "Using Design Rule Checks to automate validation and prevent manufacturing errors.", objs: ["Clearance Rules", "Netlist Checks", "Rule Automation"] },
+                    { title: "16. Proteus Sim Tutorials", url: "https://www.labcenter.com/", blocks: false, desc: "Advanced step-by-step guides for simulating complex power circuits and microcontrollers.", objs: ["SPICE Analysis", "Mixed Signal Sim", "Logic Verification"] }
+                ]
+            },
+            {
+                group: "Phase 7: Validation & Production",
+                items: [
+                    { title: "17. Thermal Management", url: "https://www.analog.com/en/technical-articles.html", blocks: true, desc: "Managing heat in dense electronics to prevent thermal runaway and improve reliability.", objs: ["Heatsink Sizing", "Thermal Resistance", "Airflow Models"] },
+                    { title: "18. Gerber Format Explained", url: "https://www.ucamco.com/en/gerber", blocks: true, desc: "Technical breakdown of the standard file format used for industrial PCB fabrication.", objs: ["Gerber X2", "Aperture Files", "Drill Data"] },
+                    { title: "19. JLCPCB Process", url: "https://jlcpcb.com/", blocks: false, desc: "Overview of the modern industrial PCB fabrication and SMT assembly workflow.", objs: ["Fabrication Flow", "Assembly Service", "Stencil Specs"] },
+                    { title: "20. Fabrication Guide", url: "https://www.protoexpress.com/blog/pcb-fabrication-process/", blocks: true, desc: "Detailed breakdown of etching, lamination, and plating processes in board houses.", objs: ["Etch Control", "Lamination Cycles", "Plating Quality"] }
+                ]
+            },
+            {
+                group: "Phase 8: Debug & Testing",
+                items: [
+                    { title: "22. STM32 Debugging", url: "https://www.st.com/en/development-tools/stm32cubeide.html", blocks: true, desc: "Professional software debugging using breakpoints, trace, and memory analysis.", objs: ["SWD/JTAG", "Breakpoint Logic", "Register Analysis"] },
+                    { title: "23. First Power-Up Guide", url: "https://www.embedded.com/", blocks: true, desc: "Safety-first protocols for the initial power application to a new hardware prototype.", objs: ["Current Limiting", "Smoke Testing", "Voltage Rail Check"] },
+                    { title: "24. Thermal Imaging", url: "https://www.flir.com/discover/", blocks: true, desc: "Using infrared cameras to identify hotspots and thermal bottlenecks in hardware.", objs: ["Emissivity", "Hotspot Detection", "Thermal Gradient"] },
+                    { title: "25. Oscilloscope Basics", url: "https://www.keysight.com/us/en/assets/7018-03184/application-notes/5989-8064.pdf", blocks: true, desc: "Signal visualization techniques for high-speed digital and analog waveform analysis.", objs: ["Trigger Logic", "Signal Integrity", "Probe Loading"] }
+                ]
+            },
+            {
+                group: "Phase 9: Compliance",
+                items: [
+                    { title: "27. Rohde & Schwarz EMI", url: "https://www.rohde-schwarz.com/", blocks: true, desc: "Comprehensive guide to electromagnetic interference analysis and noise suppression.", objs: ["Farfield Testing", "Nearfield Probing", "EMI Shielding"] },
+                    { title: "28. Harmonics Overview", url: "https://ieeexplore.ieee.org/", blocks: true, desc: "Analyzing Total Harmonic Distortion (THD) and power factor in switching converters.", objs: ["THD Analysis", "PFC Circuits", "Harmonic Limits"] },
+                    { title: "30. Fluke Hipot Guide", url: "https://www.fluke.com/en-in/learn/blog/safety/hipot-testing", blocks: true, desc: "Safety testing for insulation breakdown and dielectric withstand in power systems.", objs: ["Leakage Current", "Isolation Barriers", "Dielectric Test"] },
+                    { title: "31. Insulation Testing", url: "https://megger.com/", blocks: true, desc: "Using megohmmeters to verify long-term insulation reliability and safety.", objs: ["Insulation Resistance", "Voltage Stress", "Safety Margins"] }
+                ]
+            },
+            {
+                group: "Phase 10: Enclosure & IP",
+                items: [
+                    { title: "32. Autodesk Education", url: "https://www.autodesk.com/education/home", blocks: true, desc: "3D mechanical design for electronic enclosures and thermal modeling.", objs: ["3D CAD", "Enclosure Fit", "Component Mounting"] },
+                    { title: "33. ISO Packaging", url: "https://www.iso.org/", blocks: true, desc: "International standards for product packaging, shipping safety, and environmental protection.", objs: ["ISO Standards", "Vibration Testing", "Material Compliance"] },
+                    { title: "34. IP Rating Guide", url: "https://www.iec.ch/ip-ratings", blocks: true, desc: "IEC standards for ingress protection against dust and liquid ingress.", objs: ["IEC 60529", "IP67/68 Specs", "Sealing Design"] }
+                ]
+            }
+        ];
+
+        function initApp() {
+            const list = document.getElementById('module-list');
+            libraryData.forEach((section) => {
+                const header = document.createElement('div');
+                header.className = "module-header";
+                header.innerText = section.group;
+                list.appendChild(header);
+
+                section.items.forEach((item) => {
+                    const btn = document.createElement('div');
+                    btn.className = "nav-item";
+                    btn.innerHTML = `<div class="dot"></div><span>${item.title}</span>`;
+                    btn.onclick = () => {
+                        document.querySelectorAll('.nav-item').forEach(c => c.classList.remove('active'));
+                        btn.classList.add('active');
+                        loadResource(item, section.group);
+                    };
+                    list.appendChild(btn);
+                });
+            });
+            // Auto-load a default item
+            loadResource(libraryData[1].items[0], libraryData[1].group); // Default to Reading Schematics
+            document.querySelectorAll('.nav-item')[2].classList.add('active');
+        }
+
+        function loadResource(item, modName) {
+            const viewer = document.getElementById('main-viewer');
+            const fallback = document.getElementById('fallback-layer');
+
+            document.getElementById('display-title').innerText = item.title.includes('.') ? item.title.split('. ')[1] : item.title;
+            document.getElementById('display-mod').innerText = modName.split(':')[0];
+            document.getElementById('launch-link').href = item.url;
+            document.getElementById('lesson-synopsis').innerText = item.desc;
+
+            const objList = document.getElementById('lesson-objectives');
+            objList.innerHTML = "";
+            item.objs.forEach(o => {
+                const li = document.createElement('li');
+                li.className = "flex items-center gap-2";
+                li.innerHTML = `<i class="fas fa-check-circle text-orange-500 text-[10px]"></i> ${o}`;
+                objList.appendChild(li);
+            });
+
+            if (item.blocks) {
+                viewer.style.opacity = "0";
+                viewer.src = "about:blank";
+                fallback.style.display = "flex";
+            } else {
+                fallback.style.display = "none";
+                viewer.style.opacity = "1";
+                viewer.src = item.url;
+            }
+        }
+
+        // --- Three.js Animation ---
+        let scene, camera, renderer, crystal;
+        function init3D() {
+            const cont = document.getElementById('canvas-fallback');
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, cont.clientWidth / cont.clientHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(cont.clientWidth, cont.clientHeight);
+            cont.appendChild(renderer.domElement);
+
+            const geometry = new THREE.TorusKnotGeometry(2.5, 0.6, 128, 16);
+            const material = new THREE.MeshPhongMaterial({ color: 0x0066b2, wireframe: true });
+            crystal = new THREE.Mesh(geometry, material);
+            scene.add(crystal);
+
+            const light = new THREE.PointLight(0xffffff, 1.5);
+            light.position.set(10, 10, 10);
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
+            camera.position.z = 8;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                crystal.rotation.y += 0.005;
+                crystal.rotation.x += 0.002;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        window.onload = () => { initApp(); init3D(); };
+        window.onresize = () => {
+            const cont = document.getElementById('canvas-fallback');
+            camera.aspect = cont.clientWidth / cont.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(cont.clientWidth, cont.clientHeight);
+        };
+    </script>
+</body>
+
+</html>
