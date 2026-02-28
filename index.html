@@ -4,17 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMPS Reference Portal</title>
+    <title>SMPS Student Portal</title>
     <style>
         :root {
             /* Light Theme Variables */
             --bg-color: #ffffff;
             --card-bg: #ffffff;
-            --text-main: #000000;
+            --text-main: #111827;
             --text-muted: #6b7280;
             --primary-color: #2563eb;
             --primary-hover: #1d4ed8;
             --border-color: #f3f4f6;
+            --secondary-bg: #f3f4f6;
+            --secondary-text: #374151;
             --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
             --card-hover-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
         }
@@ -28,6 +30,8 @@
             --primary-color: #3b82f6;
             --primary-hover: #60a5fa;
             --border-color: #222222;
+            --secondary-bg: #1f2937;
+            --secondary-text: #e5e7eb;
         }
 
         * {
@@ -80,7 +84,7 @@
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 10px;
             font-weight: 600;
             font-size: 0.95rem;
@@ -94,15 +98,9 @@
         }
 
         .btn-outline {
-            background: #f9fafb;
-            border-color: #e5e7eb;
-            color: #374151;
-        }
-
-        [data-theme="dark"] .btn-outline {
-            background: #111;
-            border-color: #333;
-            color: #eee;
+            background: var(--secondary-bg);
+            border-color: transparent;
+            color: var(--secondary-text);
         }
 
         .btn-primary {
@@ -110,8 +108,12 @@
             color: white;
         }
 
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
         .theme-toggle {
-            background: #f3f4f6;
+            background: var(--secondary-bg);
             border: none;
             color: var(--text-muted);
             cursor: pointer;
@@ -123,16 +125,13 @@
             justify-content: center;
         }
 
-        [data-theme="dark"] .theme-toggle {
-            background: #1f2937;
-        }
-
         /* Hero Section */
         .hero {
             padding: 80px 5% 40px;
             text-align: center;
             max-width: 1000px;
             margin: 0 auto;
+            background: radial-gradient(circle at top, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
         }
 
         .badge {
@@ -154,11 +153,7 @@
             margin-bottom: 24px;
             letter-spacing: -0.04em;
             line-height: 1.05;
-            color: #111827;
-        }
-
-        [data-theme="dark"] h1 {
-            color: #ffffff;
+            color: var(--text-main);
         }
 
         h1 .blue-text {
@@ -176,7 +171,12 @@
         .hero-btns {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 16px;
+        }
+
+        .hero-btns .btn {
+            font-size: 1.05rem;
+            padding: 14px 32px;
         }
 
         /* Category Grid */
@@ -278,11 +278,12 @@
 
     <nav>
         <a href="#" class="logo-container">
-            <img src="smps-logo.jpg" alt="SMPS Logo" class="logo-img"
+            <img src="smpss-logo.jpg" alt="SMPS Logo" class="logo-img"
                 onerror="this.src='https://cdn-icons-png.flaticon.com/512/3413/3413535.png'">
             SMPS Portal
         </a>
         <div class="nav-actions">
+            <a href="#" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">Take a Tour</a>
             <button class="theme-toggle" id="theme-toggle">
                 <svg id="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
@@ -301,7 +302,6 @@
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
             </button>
-            <a href="#" class="btn btn-outline">Take a Tour</a>
         </div>
     </nav>
 
@@ -311,10 +311,16 @@
         <p class="hero-desc">Track attendance, submit projects, chat with mentors, and stay updated with all
             notifications — all in a clean, simple dashboard.</p>
         <div class="hero-btns">
-            <a href="#content" class="btn btn-primary">Get Started</a>
-            <a href="#" class="btn btn-outline">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            <a href="#content" class="btn btn-primary">
+                Get Started
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
                     stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                </svg>
+            </a>
+            <a href="#" class="btn btn-outline">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none">
                     <polygon points="5 3 19 12 5 21 5 3" />
                 </svg>
                 Watch Tour
@@ -323,8 +329,8 @@
     </header>
 
     <main id="content" class="grid-container">
-        <!-- BMS -->
-        <a href="BMS/BMS.html" class="card">
+        <!-- BMS Card -->
+        <a href="BMS.html" class="card">
             <div class="card-icon icon-bms">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -332,12 +338,12 @@
                 </svg>
             </div>
             <h3>BMS</h3>
-            <p>Battery Management Systems technical documentation and safety guides.</p>
-            <div class="card-footer">Open File →</div>
+            <p>Access Battery Management Systems documentation and fundamentals.</p>
+            <div class="card-footer">Open BMS.html →</div>
         </a>
 
-        <!-- Product Development -->
-        <a href="Engineering_Product_Dev_e_Links/Engineering_Product_Dev_Links.html" class="card">
+        <!-- Product Development Card -->
+        <a href="Engineering.html" class="card">
             <div class="card-icon icon-prod">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -347,34 +353,27 @@
                 </svg>
             </div>
             <h3>Product Development</h3>
-            <p>Engineering workflows, product lifecycles, and research link collections.</p>
-            <div class="card-footer">Open File →</div>
+            <p>Explore engineering links, product lifecycles, and dev resources.</p>
+            <div class="card-footer">Open Engineering.html →</div>
         </a>
 
-        <!-- PCB Design -->
-        <a href="PCB Design YouTube_Full Links/PCB Design YouTube Links.html" class="card">
+        <!-- PCB Design Card -->
+        <a href="PCB Design Y.html" class="card">
             <div class="card-icon icon-pcb">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <rect x="4" y="4" width="16" height="16" rx="2" />
                     <path d="M9 9h6v6H9z" />
-                    <path d="M9 1v3" />
-                    <path d="M15 1v3" />
-                    <path d="M9 20v3" />
-                    <path d="M15 20v3" />
-                    <path d="M20 9h3" />
-                    <path d="M20 15h3" />
-                    <path d="M1 9h3" />
-                    <path d="M1 15h3" />
+                    <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" />
                 </svg>
             </div>
             <h3>PCB Design</h3>
-            <p>Circuit design best practices and YouTube tutorial collections.</p>
-            <div class="card-footer">Open File →</div>
+            <p>Comprehensive YouTube tutorial links and design documentation.</p>
+            <div class="card-footer">Open PCB Design Y.html →</div>
         </a>
 
-        <!-- Soldering -->
-        <a href="Soldering_and_Desoldering_Resources/Soldering_and_Desoldering_Resources.html" class="card">
+        <!-- Soldering Card -->
+        <a href="Soldering.html" class="card">
             <div class="card-icon icon-sold">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -383,8 +382,8 @@
                 </svg>
             </div>
             <h3>Soldering & Assembly</h3>
-            <p>Quality control checklists and assembly guides for hardware components.</p>
-            <div class="card-footer">Open File →</div>
+            <p>Desoldering techniques and hardware assembly resources.</p>
+            <div class="card-footer">Open Soldering.html →</div>
         </a>
     </main>
 
@@ -406,6 +405,15 @@
                 moonIcon.style.display = 'none';
             }
         });
+
+        // Initialize theme icons based on current theme
+        if (body.getAttribute('data-theme') === 'dark') {
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+        } else {
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+        }
     </script>
 </body>
 
